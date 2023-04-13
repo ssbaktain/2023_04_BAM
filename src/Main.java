@@ -26,18 +26,21 @@ public class Main {
 				String title = sc.nextLine();
 				System.out.print("내용 : ");
 				String body = sc.nextLine();
+				
+				Article article = new Article(++writingCount, title, body);
 
-				articles.add(new Article(++writingCount, title, body));
-				System.out.println(articles.get(articles.size() - 1).id + "번 글이 생성되었습니다.");
+				articles.add(article);
+				System.out.println(article.id + "번 글이 생성되었습니다.");
 			} else if (cmd.equals("article list")) {
 				if (articles.size() == 0) {
 					System.out.println("존재하는 게시물이 없습니다.");
 					continue;
 				}
 				
-				System.out.print("번호	|	제목\n");
+				System.out.println("번호	|	제목");
 				for (int i = articles.size() - 1; i >= 0; i--) {
-					System.out.println(articles.get(i).id + "	|	" + articles.get(i).title);
+					Article article = articles.get(i);
+					System.out.printf("%d	|	%s\n", article.id, article.title);
 				}
 			} else
 				System.out.println("'" + cmd + "'는 존재하지 않는 명령어입니다.");
