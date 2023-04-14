@@ -7,17 +7,21 @@ import java.util.Scanner;
 import Util.Util;
 
 public class Main {
-	public static int writingCount = 0;
-
 	public static List<Article> articles;
+	public static int writingCount;
+	
+	static {
+		articles = new ArrayList<Article>();
+		writingCount = 0;
+	}
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 
-		articles = new ArrayList<Article>();
 		String cmd = "";
 
 		System.out.println("== 프로그램 시작 ==");
+		makeTestData();
 		while (true) {
 			System.out.print("\n명령어) ");
 			cmd = sc.nextLine().trim();
@@ -119,6 +123,16 @@ public class Main {
 				return article;
 		}
 		return null;
+	}
+	
+	static void makeTestData() {
+		for (int i = 1; i <= 5; i++) {
+			String title = "제목" + i;
+			String body = "내용" + i;
+			Article article = new Article(++writingCount, title, body);
+			articles.add(article);
+		}
+		System.out.println("테스트용 게시물 데이터를 5개 생성하였습니다.");
 	}
 }
 
