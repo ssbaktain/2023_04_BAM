@@ -78,13 +78,13 @@ public class App {
 		} else if (cmd.startsWith("article delete ")) {
 			int target = Integer.parseInt(cmd.split(" ")[2]);
 
-			Article article = foundArticleById(target);
+			int index = foundIndexById(target);
 
-			if (article == null) {
+			if (index == -1) {
 				System.out.println(target + "번 게시물은 존재하지 않습니다.");
 				continue;
 			}
-			articles.remove(article);
+			articles.remove(index);
 			System.out.println(target + "번 게시물이 삭제되었습니다.");
 		} else if (cmd.equals("article list")) {
 			if (articles.size() == 0) {
@@ -120,11 +120,16 @@ public class App {
 	}
 
 	static Article foundArticleById(int id) {
-		for (Article article : App.articles) {
-			if (article.id == id)
-				return article;
+		if(foundIndexById(id) == -1) return null;
+		return articles.get(foundIndexById(id));
+	}
+	
+	static int foundIndexById(int id) {
+		for (int i = 0; i < App.articles.size(); i++) {
+			if (articles.get(i).id == id)
+				return i;
 		}
-		return null;
+		return -1;
 	}
 
 	static void makeTestData() {
