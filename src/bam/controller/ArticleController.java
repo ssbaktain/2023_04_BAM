@@ -6,18 +6,44 @@ import java.util.Scanner;
 
 import bam.dto.Article;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	private List<Article> articles;
 	private Scanner sc;
 	private int writingCount;
+	private String cmd;
 
+	
 	public ArticleController(List<Article> articles, Scanner sc) {
 		this.articles = articles;
 		this.sc = sc;
 		this.writingCount = 0;
 	}
 	
-	public void doWrite() {
+	public void doAction(String cmd, String methodName) {
+		this.cmd = cmd;
+		switch (methodName) {
+		case "write":
+			doWrite();
+			break;
+		case "list":
+			showList();
+			break;
+		case "delete":
+			doDelete();
+			break;
+		case "modify":
+			doModify();
+			break;
+		case "detail":
+			showDetail();
+			break;
+		default:
+			System.out.println("명령어를 확인해주세요.");
+			break;
+		}
+	}
+	
+	private void doWrite() {
 		System.out.println("== 게시물 작성 ==");
 		System.out.print("제목 : ");
 		String title = sc.nextLine();
@@ -31,8 +57,12 @@ public class ArticleController {
 	}
 	
 	
-	public void doModify(String cmd) {
-		int target = getTarget(cmd);
+	private void doModify() {
+		if (cmd.split(" ").length == 2) {
+			System.out.println("명령어를 확인해주세요.");
+			return;
+		}
+		int target = getTarget();
 		if (target == -1) {
 			System.out.println("'article modify' 뒤에는 숫자만 올 수 있습니다.");
 			return;
@@ -67,8 +97,12 @@ public class ArticleController {
 		System.out.println(article.id + "번 게시물이 수정되었습니다.");
 	}
 	
-	public void doDelete(String cmd) {
-		int target = getTarget(cmd);
+	private void doDelete() {
+		if (cmd.split(" ").length == 2) {
+			System.out.println("명령어를 확인해주세요.");
+			return;
+		}
+		int target = getTarget();
 		if (target == -1) {
 			System.out.println("'article delete' 뒤에는 숫자만 올 수 있습니다.");
 			return;
@@ -82,12 +116,7 @@ public class ArticleController {
 		System.out.println(target + "번 게시물이 삭제되었습니다.");
 	}
 	
-	public Article foundArticleById(int id) {
-		if(foundIndexById(id) == -1) return null;
-		return articles.get(foundIndexById(id));
-	}
-	
-	public void showList(String cmd) {
+	private void showList() {
 		List<Article> foundList = new ArrayList<>();
 		if (cmd.startsWith("article list ")) {
 			String target = cmd.substring("article list".length()).trim();
@@ -110,8 +139,12 @@ public class ArticleController {
 		}
 	}
 	
-	public void showDetail(String cmd) {
-		int target = getTarget(cmd);
+	private void showDetail() {
+		if (cmd.split(" ").length == 2) {
+			System.out.println("명령어를 확인해주세요.");
+			return;
+		}
+		int target = getTarget();
 		if (target == -1) {
 			System.out.println("'article detail' 뒤에는 숫자만 올 수 있습니다.");
 			return;
@@ -128,7 +161,12 @@ public class ArticleController {
 		System.out.printf("내용 : %s\n", article.body);
 	}
 	
-	public int foundIndexById(int id) {
+	private Article foundArticleById(int id) {
+		if(foundIndexById(id) == -1) return null;
+		return articles.get(foundIndexById(id));
+	}
+	
+	private int foundIndexById(int id) {
 		for (int i = 0; i < articles.size(); i++) {
 			if (articles.get(i).id == id)
 				return i;
@@ -136,14 +174,14 @@ public class ArticleController {
 		return -1;
 	}
 
-	public int getTarget(String cmd) {
+	private int getTarget() {
 		String targetStr = cmd.split(" ")[2];
 		if (isNumber(targetStr) == false)
 			return -1;
 		return Integer.parseInt(targetStr);
 	}
 
-	public boolean isNumber(String strValue) {
+	private boolean isNumber(String strValue) {
 		return strValue.matches("[-+]?\\d*\\.?\\d+");
 	}
 	

@@ -6,17 +6,34 @@ import java.util.Scanner;
 
 import bam.dto.Member;
 
-public class MemberController {
+public class MemberController extends Controller {
 	private List<Member> members;
 	private Scanner sc;
 	private int memberCount;
+	private String cmd;
 	
 	public MemberController(List<Member> members, Scanner sc) {
 		this.members = members;
 		this.sc = sc;
 		this.memberCount = 0;
 	}
-	public void doJoin() {
+	
+	public void doAction(String cmd, String methodName) {
+		this.cmd = cmd;
+		switch (methodName) {
+		case "join":
+			doJoin();
+			break;
+		case "list":
+			showList();
+			break;
+		default:
+			System.out.println("명령어를 확인해주세요.");
+			break;
+		}
+	}
+	
+	private void doJoin() {
 			String userId;
 			String userPw;
 			String userName;
@@ -59,7 +76,7 @@ public class MemberController {
 		
 	}
 	
-	public void memberList(String cmd) {
+	private void showList() {
 		List<Member> foundList = new ArrayList<>();
 		if (cmd.startsWith("member list ")) {
 			String target = cmd.substring("member list".length()).trim();
