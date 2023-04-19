@@ -56,7 +56,6 @@ public class ArticleController extends Controller {
 		System.out.println(article.id + "번 글이 생성되었습니다.");
 	}
 	
-	
 	private void doModify() {
 		if (cmd.split(" ").length == 2) {
 			System.out.println("명령어를 확인해주세요.");
