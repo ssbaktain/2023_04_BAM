@@ -79,7 +79,7 @@ public class MemberController extends Controller {
 	}
 	
 	private void doLogin() {
-		if (isLoginedNow()) {
+		if (nowLoginedUser != null) {
 			System.out.println("로그아웃 후 이용해주세요.");
 			return;
 		}
@@ -102,7 +102,7 @@ public class MemberController extends Controller {
 	}
 	
 	private void doLogout() {
-		if (isLoginedNow() == false) {
+		if (nowLoginedUser == null) {
 			System.out.println("현재 로그인 상태가 아닙니다.");
 			return;
 		}
@@ -140,13 +140,6 @@ public class MemberController extends Controller {
 			}
 		}
 		return null;
-	}
-	
-	private boolean isLoginedNow() {
-		if (nowLoginedUser != null) {
-			return true;
-		}
-		return false;
 	}
 	
 	public void makeTestData() {
