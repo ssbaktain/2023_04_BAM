@@ -62,6 +62,10 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doModify() {
+		if (loginedUser == null) {
+			System.out.println("현재 로그인 상태가 아닙니다.");
+			return;
+		}
 		if (cmd.split(" ").length == 2) {
 			System.out.println("명령어를 확인해주세요.");
 			return;
@@ -75,6 +79,10 @@ public class ArticleController extends Controller {
 
 		if (article == null) {
 			System.out.println(target + "번 게시물은 존재하지 않습니다.");
+			return;
+		}
+		if (loginedUser.id != article.memberId) {
+			System.out.println("회원님의 게시물이 아닙니다.");
 			return;
 		}
 		System.out.println("수정할 항목을 선택하세요. (제목 / 내용 / 전체)");
@@ -102,6 +110,10 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doDelete() {
+		if (loginedUser == null) {
+			System.out.println("현재 로그인 상태가 아닙니다.");
+			return;
+		}
 		if (cmd.split(" ").length == 2) {
 			System.out.println("명령어를 확인해주세요.");
 			return;
@@ -114,6 +126,10 @@ public class ArticleController extends Controller {
 		int index = foundIndexById(target);
 		if (index == -1) {
 			System.out.println(target + "번 게시물은 존재하지 않습니다.");
+			return;
+		}
+		if (loginedUser.id != articles.get(index).memberId) {
+			System.out.println("회원님의 게시물이 아닙니다.");
 			return;
 		}
 		articles.remove(index);
@@ -136,10 +152,10 @@ public class ArticleController extends Controller {
 		}
 
 		System.out.println("== 게시물 목록 ==");
-		System.out.println("번호	|		작성일			|	제목");
+		System.out.println("번호	|		작성일			|	제목	|	작성자");
 		for (int i = foundList.size() - 1; i >= 0; i--) {
 			Article article = foundList.get(i);
-			System.out.printf("%d	|	%s	|	%s\n", article.id, article.regDate, article.title);
+			System.out.printf("%d	|	%s	|	%s	|	%d\n", article.id, article.regDate, article.title, article.memberId);
 		}
 	}
 	
@@ -161,6 +177,7 @@ public class ArticleController extends Controller {
 		System.out.println("== 게시물 상세보기 ==");
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성일 : %s\n", article.regDate);
+		System.out.printf("작성자 : %d\n", article.memberId);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
 	}
