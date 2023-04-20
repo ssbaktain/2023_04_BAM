@@ -44,11 +44,6 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doWrite() {
-		if (loginedUser == null) {
-			System.out.println("현재 로그인 상태가 아닙니다.");
-			return;
-		}
-		
 		System.out.println("== 게시물 작성 ==");
 		System.out.print("제목 : ");
 		String title = sc.nextLine();
@@ -62,10 +57,6 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doModify() {
-		if (loginedUser == null) {
-			System.out.println("현재 로그인 상태가 아닙니다.");
-			return;
-		}
 		if (cmd.split(" ").length == 2) {
 			System.out.println("명령어를 확인해주세요.");
 			return;
@@ -110,10 +101,6 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doDelete() {
-		if (loginedUser == null) {
-			System.out.println("현재 로그인 상태가 아닙니다.");
-			return;
-		}
 		if (cmd.split(" ").length == 2) {
 			System.out.println("명령어를 확인해주세요.");
 			return;
