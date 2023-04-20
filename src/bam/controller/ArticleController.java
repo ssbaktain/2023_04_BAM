@@ -44,13 +44,18 @@ public class ArticleController extends Controller {
 	}
 	
 	private void doWrite() {
+		if (loginedUser == null) {
+			System.out.println("현재 로그인 상태가 아닙니다.");
+			return;
+		}
+		
 		System.out.println("== 게시물 작성 ==");
 		System.out.print("제목 : ");
 		String title = sc.nextLine();
 		System.out.print("내용 : ");
 		String body = sc.nextLine();
 		
-		Article article = new Article(++writingCount, title, body);
+		Article article = new Article(++writingCount, loginedUser.id, title, body);
 		
 		articles.add(article);
 		System.out.println(article.id + "번 글이 생성되었습니다.");
@@ -188,7 +193,7 @@ public class ArticleController extends Controller {
 		for (int i = 1; i <= 5; i++) {
 			String title = "제목" + i;
 			String body = "내용" + i;
-			Article article = new Article(++writingCount, title, body);
+			Article article = new Article(++writingCount, i, title, body);
 			articles.add(article);
 		}
 		System.out.println("테스트용 게시물 데이터를 5개 생성하였습니다.");

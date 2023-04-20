@@ -11,7 +11,6 @@ public class MemberController extends Controller {
 	private Scanner sc;
 	private int memberCount;
 	private String cmd;
-	private Member nowLoginedUser;
 	
 	public MemberController(List<Member> members, Scanner sc) {
 		this.members = members;
@@ -79,7 +78,7 @@ public class MemberController extends Controller {
 	}
 	
 	private void doLogin() {
-		if (nowLoginedUser != null) {
+		if (loginedUser != null) {
 			System.out.println("로그아웃 후 이용해주세요.");
 			return;
 		}
@@ -94,19 +93,19 @@ public class MemberController extends Controller {
 		System.out.print("로그인 비밀번호 : ");
 		String loginPw = sc.nextLine();
 		if (member.loginPw.equals(loginPw)) {
-			nowLoginedUser = member;
-			System.out.println(nowLoginedUser.loginId + "님 환영합니다.");
+			loginedUser = member;
+			System.out.println(loginedUser.loginId + "님 환영합니다.");
 			return;
 		}
 		System.out.println("비밀번호가 일치하지 않습니다.");
 	}
 	
 	private void doLogout() {
-		if (nowLoginedUser == null) {
+		if (loginedUser == null) {
 			System.out.println("현재 로그인 상태가 아닙니다.");
 			return;
 		}
-		nowLoginedUser = null;
+		loginedUser = null;
 		System.out.println("로그아웃 되었습니다.");
 	}
 
