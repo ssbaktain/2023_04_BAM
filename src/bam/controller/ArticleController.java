@@ -1,22 +1,20 @@
 package bam.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import bam.container.Container;
 import bam.dto.Article;
+import bam.service.ArticleService;
 
 public class ArticleController extends Controller {
-	private List<Article> articles;
+	private ArticleService articleService;
 	private Scanner sc;
-	private int writingCount;
 	private String cmd;
 
-	
-	public ArticleController(List<Article> articles, Scanner sc) {
-		this.articles = articles;
+	public ArticleController(Scanner sc) {
+		articleService = Container.articleService;
 		this.sc = sc;
-		this.writingCount = 0;
 	}
 	
 	public void doAction(String cmd, String methodName) {
@@ -50,9 +48,9 @@ public class ArticleController extends Controller {
 		System.out.print("내용 : ");
 		String body = sc.nextLine();
 		
-		Article article = new Article(++writingCount, loginedUser.id, title, body);
+		Article article = new Article(articleService.setLastId(), loginedUser.id, title, body);
 		
-		articles.add(article);
+		articleService.add(article);
 		System.out.println(article.id + "번 글이 생성되었습니다.");
 	}
 	
@@ -61,12 +59,12 @@ public class ArticleController extends Controller {
 			System.out.println("명령어를 확인해주세요.");
 			return;
 		}
-		int target = getTarget();
+		int target = articleService.getTarget(cmd);
 		if (target == -1) {
 			System.out.println("'article modify' 뒤에는 숫자만 올 수 있습니다.");
 			return;
 		}
-		Article article = foundArticleById(target);
+		Article article = articleService.foundArticleById(target);
 
 		if (article == null) {
 			System.out.println(target + "번 게시물은 존재하지 않습니다.");
@@ -105,33 +103,27 @@ public class ArticleController extends Controller {
 			System.out.println("명령어를 확인해주세요.");
 			return;
 		}
-		int target = getTarget();
+		int target = articleService.getTarget(cmd);
 		if (target == -1) {
 			System.out.println("'article delete' 뒤에는 숫자만 올 수 있습니다.");
 			return;
 		}
-		int index = foundIndexById(target);
+		int index = articleService.foundIndexById(target);
+		Article targetArticle = articleService.foundArticleById(index);
 		if (index == -1) {
 			System.out.println(target + "번 게시물은 존재하지 않습니다.");
 			return;
 		}
-		if (loginedUser.id != articles.get(index).memberId) {
+		if (loginedUser.id != targetArticle.memberId) {
 			System.out.println("회원님의 게시물이 아닙니다.");
 			return;
 		}
-		articles.remove(index);
+		articleService.remove(targetArticle);
 		System.out.println(target + "번 게시물이 삭제되었습니다.");
 	}
 	
 	private void showList() {
-		List<Article> foundList = new ArrayList<>();
-		if (cmd.startsWith("article list ")) {
-			String target = cmd.substring("article list".length()).trim();
-			for (Article article : articles) {
-				if (article.title.contains(target))
-					foundList.add(article);
-			}
-		} else foundList = articles;
+		List<Article> foundList = articleService.getArticleList(cmd);
 		
 		if (foundList.size() == 0) {
 			System.out.println("존재하는 게시물이 없습니다.");
@@ -151,12 +143,12 @@ public class ArticleController extends Controller {
 			System.out.println("명령어를 확인해주세요.");
 			return;
 		}
-		int target = getTarget();
+		int target = articleService.getTarget(cmd);
 		if (target == -1) {
 			System.out.println("'article detail' 뒤에는 숫자만 올 수 있습니다.");
 			return;
 		}
-		Article article = foundArticleById(target);
+		Article article = articleService.foundArticleById(target);
 		if (article == null) {
 			System.out.println(target + "번 게시물은 존재하지 않습니다.");
 			return;
@@ -168,39 +160,9 @@ public class ArticleController extends Controller {
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
 	}
-	
-	private Article foundArticleById(int id) {
-		if(foundIndexById(id) == -1) return null;
-		return articles.get(foundIndexById(id));
-	}
-	
-	private int foundIndexById(int id) {
-		for (int i = 0; i < articles.size(); i++) {
-			if (articles.get(i).id == id)
-				return i;
-		}
-		return -1;
-	}
 
-	private int getTarget() {
-		String targetStr = cmd.split(" ")[2];
-		if (isNumber(targetStr) == false)
-			return -1;
-		return Integer.parseInt(targetStr);
-	}
 
-	private boolean isNumber(String strValue) {
-		return strValue.matches("[-+]?\\d*\\.?\\d+");
-	}
-	
 	public void makeTestData() {
-		for (int i = 1; i <= 5; i++) {
-			String title = "제목" + i;
-			String body = "내용" + i;
-			Article article = new Article(++writingCount, i, title, body);
-			articles.add(article);
-		}
-		System.out.println("테스트용 게시물 데이터를 5개 생성하였습니다.");
+		articleService.makeTestData();
 	}
-
 }
