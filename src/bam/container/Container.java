@@ -6,15 +6,15 @@ import bam.service.ArticleService;
 import bam.service.MemberService;
 
 public class Container {
-	public static ArticleService articleService;
 	public static ArticleDao articleDao;
-	public static MemberService memberService;
+	public static ArticleService articleService;
 	public static MemberDao memberDao;
+	public static MemberService memberService;
 	
 	static {
-		articleService = new ArticleService();
 		articleDao = new ArticleDao();
-		memberService = new MemberService();
+		articleService = new ArticleService();
 		memberDao = new MemberDao();
+		memberService = new MemberService();
 	}
 }
