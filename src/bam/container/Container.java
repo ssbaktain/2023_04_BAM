@@ -7,14 +7,14 @@ import bam.service.MemberService;
 
 public class Container {
 	public static ArticleDao articleDao;
-	public static ArticleService articleService;
 	public static MemberDao memberDao;
+	public static ArticleService articleService;
 	public static MemberService memberService;
 	
 	static {
 		articleDao = new ArticleDao();
-		articleService = new ArticleService();
 		memberDao = new MemberDao();
+		articleService = new ArticleService();
 		memberService = new MemberService();
 	}
 }

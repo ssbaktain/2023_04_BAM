@@ -73,7 +73,7 @@ public class MemberController extends Controller {
 		
 		Member member = new Member(id, userId, userPw, userName);
 		memberService.add(member);
-		System.out.println(member.loginId + "회원님이 가입되었습니다.");
+		System.out.println(member.name + " 회원님이 가입되었습니다.");
 	}
 	
 	private void doLogin() {
@@ -89,7 +89,7 @@ public class MemberController extends Controller {
 		String loginPw = sc.nextLine();
 		if (member.loginPw.equals(loginPw)) {
 			loginedUser = member;
-			System.out.println(loginedUser.loginId + "님 환영합니다.");
+			System.out.println(loginedUser.name + "님 환영합니다.");
 			return;
 		}
 		System.out.println("비밀번호가 일치하지 않습니다.");
@@ -112,7 +112,7 @@ public class MemberController extends Controller {
 		System.out.println("번호	|		가입일			|	아이디		|	비밀번호	|	이름");
 		for (int i = foundList.size() - 1; i >= 0; i--) {
 			Member member = foundList.get(i);
-			System.out.printf("%d	|	%s	|	%s		|	%s		|	%s\n", member.id, member.regDate, member.loginId, member.loginPw, member.Name);
+			System.out.printf("%d	|	%s	|	%s		|	%s		|	%s\n", member.id, member.regDate, member.loginId, member.loginPw, member.name);
 		}
 	}
 	

@@ -27,13 +27,22 @@ public class MemberDao extends Dao {
 			String userPw = "test" + i;
 			String userName = "유저" + i;
 			Member member = new Member(setLastId(), userId, userPw, userName);
-			members.add(member);
+			add(member);
 		}
 	}
 
 	public Member getMemberByLoginId(String userId) {
 		for (Member member : members) {
 			if (member.loginId.equals(userId)) {
+				return member;
+			}
+		}
+		return null;
+	}
+	
+	public Member getWriterById(int userId) {
+		for (Member member : members) {
+			if (member.id == userId) {
 				return member;
 			}
 		}

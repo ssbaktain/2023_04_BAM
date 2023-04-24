@@ -8,7 +8,7 @@ import bam.dto.Article;
 public class ArticleDao extends Dao {
 	private List<Article> articles;
 	
-	public ArticleDao( ) {
+	public ArticleDao() {
 		this.articles = new ArrayList<>();
 	}
 	
@@ -50,7 +50,7 @@ public class ArticleDao extends Dao {
 			String title = "제목" + i;
 			String body = "내용" + i;
 			Article article = new Article(setLastId(), i, title, body);
-			articles.add(article);
+			add(article);
 		}
 	}
 

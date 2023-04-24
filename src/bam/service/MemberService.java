@@ -30,6 +30,10 @@ public class MemberService {
 	public Member getMemberByLoginId(String userId) {
 		return memberDao.getMemberByLoginId(userId);
 	}
+	
+	public Member getWriterById(int userId) {
+		return memberDao.getWriterById(userId);
+	}
 
 	public void add(Member member) {
 		memberDao.add(member);

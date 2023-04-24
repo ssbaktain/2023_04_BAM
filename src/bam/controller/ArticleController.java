@@ -5,15 +5,19 @@ import java.util.Scanner;
 
 import bam.container.Container;
 import bam.dto.Article;
+import bam.dto.Member;
 import bam.service.ArticleService;
+import bam.service.MemberService;
 
 public class ArticleController extends Controller {
 	private ArticleService articleService;
+	private MemberService memberService;
 	private Scanner sc;
 	private String cmd;
 
 	public ArticleController(Scanner sc) {
 		articleService = Container.articleService;
+		memberService = Container.memberService;
 		this.sc = sc;
 	}
 	
@@ -134,7 +138,8 @@ public class ArticleController extends Controller {
 		System.out.println("번호	|		작성일			|	제목	|	작성자");
 		for (int i = foundList.size() - 1; i >= 0; i--) {
 			Article article = foundList.get(i);
-			System.out.printf("%d	|	%s	|	%s	|	%d\n", article.id, article.regDate, article.title, article.memberId);
+			Member member = memberService.getWriterById(article.id);
+			System.out.printf("%d	|	%s	|	%s	|	%s\n", article.id, article.regDate, article.title, member.name);
 		}
 	}
 	
@@ -153,10 +158,11 @@ public class ArticleController extends Controller {
 			System.out.println(target + "번 게시물은 존재하지 않습니다.");
 			return;
 		}
+		Member member = memberService.getWriterById(article.id);
 		System.out.println("== 게시물 상세보기 ==");
 		System.out.printf("번호 : %d\n", article.id);
 		System.out.printf("작성일 : %s\n", article.regDate);
-		System.out.printf("작성자 : %d\n", article.memberId);
+		System.out.printf("작성자 : %s\n", member.name);
 		System.out.printf("제목 : %s\n", article.title);
 		System.out.printf("내용 : %s\n", article.body);
 	}

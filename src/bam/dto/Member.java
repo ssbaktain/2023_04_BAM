@@ -7,13 +7,13 @@ public class Member {
 	public String regDate;
 	public String loginId;
 	public String loginPw;
-	public String Name;
+	public String name;
 	
 	public Member(int id, String memberId, String memberPw, String memberName) {
 		this.id = id;
 		this.regDate = Util.getDateStr();
 		this.loginId = memberId;
 		this.loginPw = memberPw;
-		this.Name = memberName;
+		this.name = memberName;
 	}
 }
